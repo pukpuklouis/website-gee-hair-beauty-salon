@@ -1,0 +1,11 @@
+# Cloudflare Workers Environment Variables
+# Copy this file to .dev.vars and fill in your values
+
+# Site URL (production: your Cloudflare Workers URL)
+SITE_URL=https://your-worker.your-subdomain.workers.dev
+
+# TinaCMS Client ID (from app.tina.io)
+PUBLIC_TINA_CLIENT_ID=your_client_id_here
+
+# TinaCMS Token (from app.tina.io)
+TINA_TOKEN=your_token_here
