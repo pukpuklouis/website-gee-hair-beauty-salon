@@ -139,11 +139,10 @@ dist
 # Astro
 .astro
 
-# Don't allow lock files to be committed (This is for templates only)
-
 # Package Manager Lock Files
+# Only commit the lock file for the package manager in use
 package-lock.json
-pnpm-lock.yaml
+# pnpm-lock.yaml  # Uncomment if using pnpm
 yarn.lock
 .yarn/cache
 bun.lockb

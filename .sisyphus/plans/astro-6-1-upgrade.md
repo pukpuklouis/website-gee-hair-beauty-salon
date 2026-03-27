@@ -153,7 +153,7 @@ Wave FINAL (驗證):
 
 ## TODOs
 
-- [ ] 1. **Node.js 版本檢查與升級**
+- [x] 1. **Node.js 版本檢查與升級**
 
   **What to do**:
   - 檢查當前 Node.js 版本：`node --version`
@@ -215,7 +215,7 @@ Wave FINAL (驗證):
 
 ---
 
-- [ ] 2. **備份專案**
+- [x] 2. **備份專案**
 
   **What to do**:
   - 確保所有本地更改已提交：`git status`
@@ -274,7 +274,7 @@ Wave FINAL (驗證):
 
 ---
 
-- [ ] 3. **執行 Astro 官方升級工具**
+- [x] 3. **執行 Astro 官方升級工具**
 
   **What to do**:
   - 運行 `npx @astrojs/upgrade`（官方升級工具）
@@ -344,7 +344,7 @@ Wave FINAL (驗證):
 
 ---
 
-- [ ] 4. **修復 Zod 4 語法**
+- [x] 4. **修復 Zod 4 語法**
 
   **What to do**:
   - 搜索項目中所有 Zod schema 定義
@@ -411,7 +411,7 @@ Wave FINAL (驗證):
 
 ---
 
-- [ ] 5. **遷移 ViewTransitions → ClientRouter**
+- [x] 5. **遷移 ViewTransitions → ClientRouter**
 
   **What to do**:
   - 搜索項目中所有 `<ViewTransitions />` 使用
@@ -479,7 +479,7 @@ Wave FINAL (驗證):
 
 ---
 
-- [ ] 6. **更新內容集合（如需要）**
+- [x] 6. **更新內容集合（如需要）**
 
   **What to do**:
   - 檢查 `src/content/config.ts` 是否存在（舊版 API）
@@ -549,7 +549,7 @@ Wave FINAL (驗證):
 
 ---
 
-- [ ] 7. **驗證 Local Dev Server**
+- [x] 7. **驗證 Local Dev Server**
 
   **What to do**:
   - 運行 `npm run dev` 啟動本地開發服務器
@@ -603,7 +603,7 @@ Wave FINAL (驗證):
 
 ---
 
-- [ ] 8. **安裝並配置 Cloudflare Adapter**
+- [x] 8. **安裝並配置 Cloudflare Adapter**
 
   **What to do**:
   - 運行 `npx astro add cloudflare` 添加 @astrojs/cloudflare
@@ -672,7 +672,7 @@ Wave FINAL (驗證):
 
 ---
 
-- [ ] 9. **創建 Wrangler 配置**
+- [x] 9. **創建 Wrangler 配置**
 
   **What to do**:
   - 創建 `wrangler.jsonc` 配置文件
@@ -740,7 +740,7 @@ Wave FINAL (驗證):
 
 ---
 
-- [ ] 10. **配置環境變數和 Secrets**
+- [x] 10. **配置環境變數和 Secrets**
 
   **What to do**:
   - 檢查專案需要的環境變數（SITE_URL, PUBLIC_TINA_CLIENT_ID, TINA_TOKEN 等）
