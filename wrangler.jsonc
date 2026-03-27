@@ -2,7 +2,7 @@
 	// Cloudflare Workers configuration
 	// See: https://developers.cloudflare.com/wrangler/configuration/
 	
-	"name": "gee-hair-beauty-salon",
+	"name": "website-gee-hair-beauty-salon",
 	"main": "./dist/_worker.js",
 	"compatibility_date": "2026-03-27",
 	
@@ -22,7 +22,7 @@
 	
 	// Build configuration
 	"build": {
-		"command": "npm run build",
+		"command": "pnpm run build",
 		"watch_dir": "src"
 	},
 	
