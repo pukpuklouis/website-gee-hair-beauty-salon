@@ -1,0 +1,67 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "agents": {
+    "sisyphus": {
+      "model": "opencode-go/glm-5"
+    },
+    "oracle": {
+      "model": "opencode-go/glm-5"
+    },
+    "librarian": {
+      "model": "opencode-go/glm-4.7"
+    },
+    "explore": {
+      "model": "opencode-go/glm-4.7"
+    },
+    "multimodal-looker": {
+      "model": "zai-coding-plan/glm-4.6v"
+    },
+    "prometheus": {
+      "model": "opencode-go/glm-5"
+    },
+    "metis": {
+      "model": "opencode-go/glm-5"
+    },
+    "momus": {
+      "model": "opencode-go/glm-4.7-flash"
+    },
+    "atlas": {
+      "model": "opencode-go/glm-5"
+    },
+    "hephaestus:": {
+      "model": "zai-coding-plan/glm-5"
+    },
+    "frontend-ui-ux-engineer": {
+      "model": "opencode-go/glm-5"
+    },
+    "document-writer": {
+      "model": "opencode-go/glm-4.7"
+    }
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "opencode-go/glm-5"
+    },
+    "ultrabrain": {
+      "model": "opencode-go/glm-5"
+    },
+    "quick": {
+      "model": "opencode-go/glm-4.7"
+    },
+    "unspecified-low": {
+      "model": "opencode-go/glm-4.7"
+    },
+    "unspecified-high": {
+      "model": "opencode-go/glm-5"
+    },
+    "writing": {
+      "model": "opencode-go/glm-4.7"
+    },
+    "artistry": {
+      "model": "zai-coding-plan/glm-4.6v"
+    },
+    "deep": {
+      "model": "opencode-go/glm-5"
+    }
+  }
+}

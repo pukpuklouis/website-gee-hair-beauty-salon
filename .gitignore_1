@@ -78,7 +78,6 @@ web_modules/
 .env.test.local
 .env.production.local
 .env.local
-.dev.vars
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -148,12 +147,4 @@ yarn.lock
 .yarn/cache
 bun.lockb
 deno.lock
-
-# Cloudflare Wrangler local state
-.wrangler/
-
-# Agent skill definitions (local development only)
-.agents/skills/
-.agent/skills/
-.claude/skills/
 
