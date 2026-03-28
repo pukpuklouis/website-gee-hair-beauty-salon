@@ -1,0 +1,71 @@
+{
+  "project": "Aura Home",
+  "type": "高端全屋智能家居系统",
+  "description": "产品官网设计",
+  "philosophy": {
+    "core_concept": "最好的科技是让你感觉不到科技的存在，只感受到舒适",
+    "approach": "剥离传统科技产品的'硬核'参数感，转而强调'科技隐形'与'生活美学'的融合"
+  },
+  "visual_strategy": {
+    "core_imagery": {
+      "scene": "晨光透过白色纱帘洒在极简风格的客厅，空气中漂浮着微尘",
+      "feature": "智能面板完美融入墙面，几乎不可见"
+    },
+    "lighting": {
+      "concept": "强调自然光与室内氛围灯的无缝过渡",
+      "time_periods": ["清晨", "正午", "黄昏", "深夜"]
+    },
+    "materials": ["哑光肤感涂层", "温润的浅色橡木", "透光的磨砂玻璃"]
+  },
+  "color_scheme": {
+    "primary": {
+      "warm_gray": "暖灰",
+      "mica_white": "云母白",
+      "linen": "亚麻色"
+    },
+    "secondary": {
+      "pale_warm_orange": "极淡的暖橙色（光晕颜色）",
+      "deep_space_gray": "深空灰（文字）"
+    },
+    "avoid": ["科技蓝", "高饱和度色彩", "锐利的金属反光"]
+  },
+  "typography": {
+    "headings": {
+      "font": "Helvetica Now Thin",
+      "style": "纤细、优雅的无衬线字体",
+      "characteristic": "字间距开阔，传递呼吸感"
+    },
+    "body": {
+      "style": "经典的衬线体",
+      "experience": "营造一种阅读家居杂志的松弛感"
+    }
+  },
+  "page_structure": {
+    "hero_section": {
+      "type": "全屏沉浸式视频",
+      "interaction": {
+        "trigger": "用户滚动",
+        "transition": "从'离家模式'（灯光熄灭、窗帘合拢）平滑过渡到'回家模式'（暖光亮起、音乐流淌）"
+      }
+    },
+    "interactive_demo": {
+      "title": "看不见的控制",
+      "mechanism": "鼠标移动模拟人的动线",
+      "response": "周围环境（灯光、温度数值）随之柔和变化，而非硬生生的开关切换"
+    },
+    "scene_narrative": {
+      "layout": "分屏布局",
+      "structure": {
+        "left": "生活场景（如阅读、沐浴）",
+        "right": "对应的智能场景预设文案",
+        "connection": "中间通过一条流动的光线连接"
+      }
+    },
+    "technical_specs": {
+      "presentation": "隐藏在'折叠卡片'中",
+      "default_display": "体验型文案（如'0.1秒极速响应'）",
+      "hidden_content": ["传感器精度", "芯片算力"]
+    }
+  },
+  "overall_temperament": ["空灵", "静谧", "带有一丝禅意"]
+}

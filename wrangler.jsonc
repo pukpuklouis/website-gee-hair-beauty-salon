@@ -1,34 +1,18 @@
 {
-	// Cloudflare Workers configuration
+	// Cloudflare Workers configuration for static site
 	// See: https://developers.cloudflare.com/wrangler/configuration/
 	
 	"name": "website-gee-hair-beauty-salon",
-	"main": "./dist/_worker.js",
 	"compatibility_date": "2026-03-27",
+	"compatibility_flags": ["nodejs_compat"],
 	
 	// Assets configuration for static site
 	"assets": {
-		"binding": "ASSETS",
-		"not_found_handling": "single-page"
+		"binding": "ASSETS"
 	},
-	
-	// Node.js compatibility for TinaCMS
-	"node_compat": true,
 	
 	// Development settings
 	"dev": {
 		"port": 8788
-	},
-	
-	// Build configuration
-	"build": {
-		"command": "pnpm run build",
-		"watch_dir": "src"
-	},
-	
-	// Environment variables (use wrangler secret put for production)
-	// Local development: create .dev.vars file
-	"vars": {
-		"SITE_URL": "http://localhost:8788"
 	}
 }
