@@ -1,5 +1,10 @@
 # Agent Configuration
 
+## Global Memory
+
+- **Always reply to user in zh-TW (繁體中文)**
+- **Reasoning/思考過程使用 English**
+
 ## Project: Gee Hair Beauty Salon
 
 Astro + TinaCMS blog website.
