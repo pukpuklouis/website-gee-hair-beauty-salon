@@ -63,6 +63,7 @@
   },
   "devDependencies": {
     "@tinacms/cli": "^2.1.2",
-    "@types/node": "^25.1.0"
+    "@types/node": "^25.1.0",
+    "wrangler": "^4.78.0"
   }
 }
