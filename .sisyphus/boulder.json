@@ -2,8 +2,11 @@
   "active_plan": "/Users/pukpuk/Dev/website-gee-hair-beauty-salon/.sisyphus/plans/astro-6-1-upgrade.md",
   "started_at": "2026-03-27T10:31:18.200Z",
   "session_ids": [
-    "ses_2d126d2eaffeoxEH1Cn4CjF2jd"
+    "ses_2d126d2eaffeoxEH1Cn4CjF2jd",
+    "ses_2cc386997ffeMJwQWCWj037ebv",
+    "ses_2cc385b33ffeCSsHa17NFgVEHs"
   ],
   "plan_name": "astro-6-1-upgrade",
-  "agent": "atlas"
+  "agent": "atlas",
+  "task_sessions": {}
 }

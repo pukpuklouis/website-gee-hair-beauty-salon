@@ -1,0 +1,277 @@
+---
+interface Designer {
+  id: number;
+  name: string;
+  englishName: string;
+  image: string;
+  title: string;
+  specialties: string[];
+  experience: string;
+  description: string;
+}
+
+const designers: Designer[] = [
+  {
+    id: 1,
+    name: '陳明華',
+    englishName: 'Michael',
+    image: '/designer1.png',
+    title: '創意總監',
+    specialties: ['#韓系層次', '#光線染', '#男士造型'],
+    experience: '15年經驗',
+    description: '專精韓系髮型設計，擅長依據個人風格打造專屬造型',
+  },
+  {
+    id: 2,
+    name: '林曉雨',
+    englishName: 'Sarah',
+    image: '/designer2.png',
+    title: '資深設計師',
+    specialties: ['#微醺蜜粉', '#燙髮達人', '#短髮專家'],
+    experience: '10年經驗',
+    description: '色彩魔法師，讓每位客人找到最適合的髮色',
+  },
+  {
+    id: 3,
+    name: '王婷婷',
+    englishName: 'Tina',
+    image: '/designer3.png',
+    title: '資深設計師',
+    specialties: ['#美甲美睫', '#精緻護髮', '#新娘造型'],
+    experience: '8年經驗',
+    description: '細節控，從髮絲到指尖都追求完美',
+  },
+  {
+    id: 4,
+    name: '張思琪',
+    englishName: 'Jessica',
+    image: '/designer4.png',
+    title: '設計師',
+    specialties: ['#青木棕', '#灰霧感', '#自然捲度'],
+    experience: '6年經驗',
+    description: '新世代設計師，緊跟韓國最新潮流趨勢',
+  },
+];
+
+const visibleDelay = (index: number) => 400 + index * 100;
+---
+
+<section
+  id="designers"
+  class="relative py-24 lg:py-32 bg-[hsl(var(--soft-cream))] overflow-hidden"
+>
+  <!-- Background Decoration -->
+  <div class="absolute top-1/2 left-0 w-96 h-96 -translate-y-1/2 -translate-x-1/2 rounded-full bg-[hsl(var(--blush-mist))]/5 blur-3xl pointer-events-none"></div>
+
+  <div class="relative z-10">
+    <!-- Section Header -->
+    <div class="px-6 sm:px-8 lg:px-16 xl:px-24 mb-12">
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+        <div>
+          <div class="flex items-center gap-3 mb-6 animate-fade-in-up opacity-0" style="animation-delay: 0ms; animation-fill-mode: forwards;">
+            <div class="w-12 h-[1px] bg-[hsl(var(--muted-bronze))]"></div>
+            <span class="text-sm tracking-[0.2em] uppercase text-[hsl(var(--muted-bronze))]">
+              Our Team
+            </span>
+          </div>
+
+          <h2 class="text-4xl lg:text-5xl font-medium text-[hsl(var(--deep-espresso))] mb-4 animate-fade-in-up opacity-0" style="animation-delay: 100ms; animation-fill-mode: forwards;">
+            遇見我們的
+            <span class="font-accent italic text-[hsl(var(--muted-bronze))]"> 藝術家</span>
+          </h2>
+
+          <p class="text-[hsl(var(--deep-espresso))]/70 max-w-xl animate-fade-in-up opacity-0" style="animation-delay: 200ms; animation-fill-mode: forwards;">
+            每位設計師都有自己的風格關鍵字，找到最懂您的那一位
+          </p>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex gap-3 animate-fade-in-up opacity-0" style="animation-delay: 300ms; animation-fill-mode: forwards;">
+          <button
+            id="scroll-left"
+            class="w-12 h-12 rounded-full border border-[hsl(var(--muted-bronze))] text-[hsl(var(--muted-bronze))] hover:bg-[hsl(var(--muted-bronze))] hover:text-white transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+            aria-label="Scroll left"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </button>
+          <button
+            id="scroll-right"
+            class="w-12 h-12 rounded-full border border-[hsl(var(--muted-bronze))] text-[hsl(var(--muted-bronze))] hover:bg-[hsl(var(--muted-bronze))] hover:text-white transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+            aria-label="Scroll right"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Designers Carousel -->
+    <div
+      id="designers-carousel"
+      class="flex gap-6 overflow-x-auto hide-scrollbar px-6 sm:px-8 lg:px-16 xl:px-24 pb-4 snap-x snap-mandatory"
+    >
+      {designers.map((designer, index) => (
+        <div
+          class="group flex-shrink-0 w-[300px] lg:w-[350px] snap-start animate-fade-in-up opacity-0"
+          style={`animation-delay: ${visibleDelay(index)}ms; animation-fill-mode: forwards;`}
+        >
+          <div class="relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+            <!-- Image -->
+            <div class="relative aspect-[3/4] bg-gradient-to-b from-[hsl(var(--warm-beige))] to-[hsl(var(--soft-cream))]">
+              <img
+                src={designer.image}
+                alt={designer.name}
+                class="w-full h-full object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+              />
+
+              <!-- Overlay -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+              <!-- Instagram Link -->
+              <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                <button class="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-colors" aria-label="Instagram">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[hsl(var(--muted-bronze))]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Info on Image -->
+              <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                <p class="text-white/90 text-sm mb-3">{designer.description}</p>
+                <button
+                  class="px-5 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm text-[hsl(var(--deep-espresso))] hover:bg-white transition-colors"
+                  onclick={`document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })`}
+                >
+                  預約設計師
+                </button>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="text-xl font-medium text-[hsl(var(--deep-espresso))]">
+                    {designer.name}
+                  </h3>
+                  <p class="text-sm font-accent italic text-[hsl(var(--muted-bronze))]">
+                    {designer.englishName}
+                  </p>
+                </div>
+                <span class="px-3 py-1 bg-[hsl(var(--warm-beige))] rounded-full text-xs text-[hsl(var(--muted-bronze))]">
+                  {designer.experience}
+                </span>
+              </div>
+
+              <p class="text-sm text-[hsl(var(--deep-espresso))]/60 mb-4">
+                {designer.title}
+              </p>
+
+              <!-- Specialties -->
+              <div class="flex flex-wrap gap-2">
+                {designer.specialties.map((specialty) => (
+                  <span class="px-3 py-1 bg-[hsl(var(--blush-mist))]/10 rounded-full text-xs text-[hsl(var(--blush-mist))]">
+                    {specialty}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Progress Indicator -->
+    <div id="progress-dots" class="flex justify-center gap-2 mt-8">
+      {designers.map((_, index) => (
+        <div
+          class="h-1 rounded-full transition-all duration-300 bg-[hsl(var(--muted-bronze))]/30"
+          data-index={index}
+        ></div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.getElementById('designers-carousel');
+    const scrollLeftBtn = document.getElementById('scroll-left');
+    const scrollRightBtn = document.getElementById('scroll-right');
+    const progressDots = document.querySelectorAll('#progress-dots > div[data-index]');
+    const totalDesigners = 4;
+
+    if (!carousel) return;
+
+    const updateScrollButtons = () => {
+      const { scrollLeft, scrollWidth, clientWidth } = carousel;
+      const canScrollLeft = scrollLeft > 0;
+      const canScrollRight = scrollLeft < scrollWidth - clientWidth - 10;
+
+      if (scrollLeftBtn) {
+        (scrollLeftBtn as HTMLButtonElement).disabled = !canScrollLeft;
+      }
+      if (scrollRightBtn) {
+        (scrollRightBtn as HTMLButtonElement).disabled = !canScrollRight;
+      }
+
+      // Update progress dots
+      const cardWidth = 300 + 24; // width + gap
+      const activeIndex = Math.round(scrollLeft / cardWidth);
+      progressDots.forEach((dot, index) => {
+        if (index === activeIndex) {
+          dot.classList.remove('w-2', 'bg-[hsl(var(--muted-bronze))]/30');
+          dot.classList.add('w-8', 'bg-[hsl(var(--muted-bronze))]');
+        } else {
+          dot.classList.add('w-2', 'bg-[hsl(var(--muted-bronze))]/30');
+          dot.classList.remove('w-8', 'bg-[hsl(var(--muted-bronze))]');
+        }
+      });
+    };
+
+    const scroll = (direction: 'left' | 'right') => {
+      const scrollAmount = 400;
+      carousel.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    };
+
+    scrollLeftBtn?.addEventListener('click', () => scroll('left'));
+    scrollRightBtn?.addEventListener('click', () => scroll('right'));
+    carousel.addEventListener('scroll', updateScrollButtons, { passive: true });
+
+    // Initial state
+    updateScrollButtons();
+
+    // Set first dot as active
+    if (progressDots[0]) {
+      progressDots[0].classList.remove('w-2', 'bg-[hsl(var(--muted-bronze))]/30');
+      progressDots[0].classList.add('w-8', 'bg-[hsl(var(--muted-bronze))]');
+    }
+  });
+</script>
+
+<style>
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out;
+  }
+</style>

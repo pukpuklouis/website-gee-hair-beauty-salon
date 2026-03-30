@@ -25,6 +25,43 @@ export const BlogCollection: Collection = {
       type: "string",
     },
     {
+      name: "subtitle",
+      label: "Subtitle",
+      type: "string",
+    },
+    {
+      name: "excerpt",
+      label: "Excerpt",
+      type: "string",
+    },
+    {
+      name: "category",
+      label: "Category",
+      type: "string",
+      options: ["染髮趨勢", "護髮知識", "髮型趨勢", "美甲趨勢", "造型教學"],
+    },
+    {
+      name: "tags",
+      label: "Tags",
+      type: "string",
+      list: true,
+    },
+    {
+      name: "author",
+      label: "Author",
+      type: "string",
+    },
+    {
+      name: "authorImage",
+      label: "Author Image",
+      type: "image",
+    },
+    {
+      name: "readTime",
+      label: "Read Time",
+      type: "string",
+    },
+    {
       name: "pubDate",
       label: "Publication Date",
       type: "datetime",

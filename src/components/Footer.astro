@@ -1,95 +1,135 @@
 ---
-import config from "../content/config/config.json";
-import IconLink from "./react/IconLink";
-const today = new Date();
+const currentYear = new Date().getFullYear();
 ---
-<div class="tina-footer">
-	<div class="tina-banner-content"><img src="/llama.svg" alt="Tina CMS Llama Logo" /><a href="https://tina.io" target="_blank" rel="noopener noreferrer">Powered by TinaCMS</a>
-	</div>
-</div>
-	<footer class="copyright-footer">
-		&copy; {today.getFullYear()}
-		{config.seo.siteOwner}. All rights reserved.
-		<div class="social-links">
-			{
-				config?.contactLinks?.map((link) => {
-					return (
-						<IconLink {...link} />
-					);
-				})
-			}
-		</div>
-	</footer>
+
+<footer class="relative bg-[hsl(var(--deep-espresso))] text-white overflow-hidden">
+  {/* Large Brand Text */}
+  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 font-display text-[30vw] lg:text-[20vw] font-bold text-white/[0.03] whitespace-nowrap pointer-events-none select-none leading-none">
+    GEE
+  </div>
+
+  {/* Main Footer Content */}
+  <div class="relative z-10 px-6 sm:px-8 lg:px-16 xl:px-24 py-16 lg:py-24">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+        {/* Brand Column */}
+        <div class="lg:col-span-1">
+          <a href="/" class="inline-block">
+            <img src="/gee-hair-beauty-salon-logo.svg" alt="Gee Hair & Beauty Salon" class="h-12 brightness-0 invert mb-4" />
+          </a>
+          <p class="font-accent italic text-white/60 mb-2">Hair & Beauty Salon</p>
+          <p class="text-white/60 text-sm mb-6">聚沙龍</p>
+          <p class="text-white/70 text-sm leading-relaxed mb-6">
+            結合韓系美學與台式服務的質感髮廊，讓每個走進來的客人，都帶著期待離開時遇見更好的自己。
+          </p>
+          {/* Social Links */}
+          <div class="flex gap-3">
+            <a
+              href="https://instagram.com/geehair"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a
+              href="https://facebook.com/geehair"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a
+              href="https://line.me/R/ti/p/@geehair"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.345 0 .55.284.55.629 0 .349-.205.631-.55.631H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+            </a>
+          </div>
+        </div>
+
+        {/* Quick Links */}
+        <div>
+          <h4 class="font-medium text-lg mb-6">快速連結</h4>
+          <ul class="space-y-3">
+            <li><a href="/" class="text-white/70 hover:text-white transition-colors text-sm">首頁</a></li>
+            <li><a href="/#about" class="text-white/70 hover:text-white transition-colors text-sm">關於我們</a></li>
+            <li><a href="/#services" class="text-white/70 hover:text-white transition-colors text-sm">服務項目</a></li>
+            <li><a href="/#portfolio" class="text-white/70 hover:text-white transition-colors text-sm">作品集</a></li>
+            <li><a href="/#designers" class="text-white/70 hover:text-white transition-colors text-sm">設計師</a></li>
+            <li><a href="/blog" class="text-white/70 hover:text-white transition-colors text-sm">美髮日誌</a></li>
+          </ul>
+        </div>
+
+        {/* Services */}
+        <div>
+          <h4 class="font-medium text-lg mb-6">服務項目</h4>
+          <ul class="space-y-3">
+            <li><a href="/#services" class="text-white/70 hover:text-white transition-colors text-sm">剪髮造型</a></li>
+            <li><a href="/#services" class="text-white/70 hover:text-white transition-colors text-sm">染髮服務</a></li>
+            <li><a href="/#services" class="text-white/70 hover:text-white transition-colors text-sm">燙髮服務</a></li>
+            <li><a href="/#services" class="text-white/70 hover:text-white transition-colors text-sm">假髮服務</a></li>
+            <li><a href="/#services" class="text-white/70 hover:text-white transition-colors text-sm">美甲美睫</a></li>
+          </ul>
+        </div>
+
+        {/* Contact Info */}
+        <div>
+          <h4 class="font-medium text-lg mb-6">聯絡我們</h4>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-white/50 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div>
+                <p class="text-white/70 text-sm">台北市信義區安和路一段 123 號</p>
+                <p class="text-white/50 text-xs mt-1">信義安和站 3 號出口步行 3 分鐘</p>
+              </div>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-white/50 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href="tel:+886-2-2345-6789" class="text-white/70 hover:text-white transition-colors text-sm">02-2345-6789</a>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-white/50 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:hello@geehair.com" class="text-white/70 hover:text-white transition-colors text-sm">hello@geehair.com</a>
+            </li>
+          </ul>
+
+          {/* Business Hours */}
+          <div class="mt-6 p-4 bg-white/5 rounded-xl">
+            <p class="text-white/50 text-xs mb-2">營業時間</p>
+            <p class="text-white/70 text-sm">週二 - 週六: 10:00 - 20:00</p>
+            <p class="text-white/70 text-sm">週日: 11:00 - 18:00</p>
+            <p class="text-white/50 text-sm mt-1">週一公休</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Bottom Bar */}
+  <div class="relative z-10 border-t border-white/10">
+    <div class="px-6 sm:px-8 lg:px-16 xl:px-24 py-6">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-white/50 text-sm">
+          © {currentYear} Gee Hair & Beauty Salon. All rights reserved.
+        </p>
+        <div class="flex gap-6">
+          <button class="text-white/50 hover:text-white text-sm transition-colors cursor-pointer">隱私政策</button>
+          <button class="text-white/50 hover:text-white text-sm transition-colors cursor-pointer">服務條款</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <style>
-
-	.copyright-footer {
-		padding: 2em 1em 2em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
-		text-align: center;
-	}
-
-	.social-links {
-		display: flex;
-		justify-content: center;
-		gap: 1em;
-		margin-top: 1em;
-	}
-
-	.social-links a {
-		text-decoration: none;
-		color: rgb(var(--gray));
-	}
-
-	.social-links a:hover {
-		color: rgb(var(--gray-dark));
-	}
-
-	.tina-footer {
-		display: flex;
-		justify-content: center;
-		position: relative;
-		width: 100%;
-		overflow: hidden;
-		background-image: linear-gradient(60deg, #000000 0%,  #EC4815 50%, #000000 100%);
-		padding: 1.5em 0;
-	}
-
-	.tina-banner-content {
-		display: flex;
-		align-items: center;
-		gap: 0.5em;
-		font-size: 1.2em;
-		position: relative;
-		z-index: 2;
-	}
-
-	.tina-footer::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: -50%;
-		width: 200%;
-		height: 100%;
-		background-image: linear-gradient(60deg, #1F1E24 25%,   #EC4815 50%, #1F1E24 75%);
-		transition: transform 1s ease-in-out;
-		z-index: 1;
-	}
-
-	.tina-footer:has(.tina-banner-content a:hover)::before {
-		transform: scaleX(2);
-	}
-
-	.tina-banner-content img {
-		width: 30px;
-		height: auto;
-	}
-
-	.tina-banner-content a {
-		color: white;
-		text-decoration: none;
-		padding-top: 0.5em;
-		font-weight: bold;
-	}
+  .font-display {
+    font-family: var(--font-display), system-ui, sans-serif;
+  }
+  .font-accent {
+    font-family: var(--font-accent), Georgia, serif;
+  }
 </style>

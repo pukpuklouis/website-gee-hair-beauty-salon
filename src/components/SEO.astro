@@ -1,0 +1,45 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  image?: string;
+  canonicalURL?: string;
+  type?: string;
+}
+
+const {
+  title = "Gee Hair & Beauty Salon",
+  description = "專業美髮沙龍，提供染髮、護髮、剪髮等服務",
+  keywords = "美髮,沙龍,染髮,護髮,剪髮,Gee Hair",
+  image = "/salon-intro.jpg",
+  canonicalURL = Astro.url.href,
+  type = "website",
+} = Astro.props;
+
+const siteName = "Gee Hair & Beauty Salon";
+---
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+
+<!-- Canonical -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta property="og:site_name" content={siteName} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />

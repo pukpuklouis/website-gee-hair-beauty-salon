@@ -1,22 +1,28 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import config from '../content/config/config.json';
-import client from '../../tina/__generated__/client';
-import HomePage from "../../tina/pages/HomePage.tsx";
-const data = await client.queries.page({relativePath: "home.mdx"});
-
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SEO from '../components/SEO.astro';
+import Schema from '../components/Schema.astro';
+import Hero from '../components/sections/Hero';
+import About from '../components/sections/About.astro';
+import Services from '../components/sections/Services.astro';
+import Portfolio from '../components/sections/Portfolio';
+import Designers from '../components/sections/Designers.astro';
+import Testimonials from '../components/sections/Testimonials';
+import Booking from '../components/sections/Booking.astro';
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={config.seo.title} description={config.seo.description} />
-	</head>
-	<body>
-		<Header />
-		<HomePage {...data} client:tina />
-		<Footer />
-	</body>
-</html>
+<BaseLayout title="Gee Hair Salon - 專業美髮沙龍" description="專業美髮沙龍，提供染髮、護髮、剪髮等服務">
+	<SEO
+		title="Gee Hair Salon - 專業美髮沙龍"
+		description="專業美髮沙龍，提供染髮、護髮、剪髮等服務"
+		keywords="美髮,沙龍,染髮,護髮,剪髮,Gee Hair"
+	/>
+	<Schema type="LocalBusiness" />
+	<Hero client:visible />
+	<About />
+	<Services />
+	<Portfolio client:visible />
+	<Designers />
+	<Testimonials client:visible />
+	<Booking />
+</BaseLayout>

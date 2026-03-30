@@ -1,112 +1,399 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import config from '../../content/config/config.json';
-import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SEO from '../../components/SEO.astro';
+import Schema from '../../components/Schema.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
+import { getCollection } from 'astro:content';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+// Get blog posts from Astro content collection
+const allPosts = await getCollection('blog');
+
+// Sort posts by date (newest first)
+const posts = allPosts.sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
+// Categories for filter (derived from actual post data)
+const categories = ['全部', ...new Set(posts.map(p => p.data.category).filter(Boolean) as string[])];
+
+// Featured post (first post)
+const featuredPost = posts[0];
+const regularPosts = posts.slice(1);
+
+// Format date helper
+function formatDate(date: Date): string {
+	return date.toLocaleDateString('zh-TW', {
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit',
+	}).replace(/\//g, '-');
+}
+
+// Calculate read time from body content
+function calculateReadTime(body: string): string {
+	if (!body) return '5 分鐘';
+	const wordCount = body.split(/\s+/).length;
+	const minutes = Math.ceil(wordCount / 200);
+	return `${minutes} 分鐘`;
+}
+
+// Get category from post (fallback to default)
+function getCategory(post: any): string {
+	return post.data.category || '美髮';
+}
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={config.seo.title} description={config.seo.description} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									<img width={720} height={360} src={post.data.heroImage} alt="" />
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
+<BaseLayout title="美髮日誌 | Gee Hair Salon" description="探索最新的染髮趨勢、護髮知識與造型技巧">
+	<SEO 
+		title="美髮日誌 | Gee Hair Salon" 
+		description="探索最新的染髮趨勢、護髮知識與造型技巧，讓你的美麗從髮絲開始" 
+		keywords="美髮,染髮趨勢,護髮知識,髮型趨勢,美甲趨勢,造型教學,Gee Hair" 
+	/>
+	<Schema type="Website" url="https://geehair.com/blog" />
+	
+	<div class="min-h-screen bg-[hsl(var(--warm-beige))]">
+		<!-- Hero Section -->
+		<section class="relative pt-32 pb-16 lg:pt-40 lg:pb-24 bg-[hsl(var(--soft-cream))]">
+			<div class="absolute inset-0 noise-overlay pointer-events-none"></div>
+			
+			<div class="relative z-10 px-6 sm:px-8 lg:px-16 xl:px-24">
+				<div class="max-w-4xl mx-auto text-center">
+					<div class="flex items-center justify-center gap-3 mb-6">
+						<div class="w-12 h-[1px] bg-[hsl(var(--muted-bronze))]"></div>
+						<span class="text-sm tracking-[0.2em] uppercase text-[hsl(var(--muted-bronze))]">
+							Blog
+						</span>
+						<div class="w-12 h-[1px] bg-[hsl(var(--muted-bronze))]"></div>
+					</div>
+
+					<h1 class="text-4xl lg:text-6xl font-medium text-[hsl(var(--deep-espresso))] mb-6">
+						美髮<span class="font-accent italic text-[hsl(var(--muted-bronze))]">日誌</span>
+					</h1>
+
+					<p class="text-lg text-[hsl(var(--deep-espresso))]/70 max-w-2xl mx-auto">
+						探索最新的染髮趨勢、護髮知識與造型技巧，讓你的美麗從髮絲開始
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Category Filter -->
+		<section class="sticky top-16 z-30 bg-[hsl(var(--warm-beige))]/95 backdrop-blur-sm border-b border-[hsl(var(--muted-bronze))]/10 py-4">
+			<div class="px-6 sm:px-8 lg:px-16 xl:px-24">
+				<div class="flex gap-3 overflow-x-auto hide-scrollbar" id="category-filter">
+					{categories.map((category) => (
+						<button
+							data-category={category}
+							class="category-btn px-5 py-2 rounded-full text-sm whitespace-nowrap transition-all duration-300 bg-white/60 text-[hsl(var(--muted-bronze))] hover:bg-white hover:shadow-md"
+						>
+							{category}
+						</button>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<!-- Featured Post -->
+		{featuredPost && (
+			<section class="py-12 lg:py-16" id="featured-section">
+				<div class="px-6 sm:px-8 lg:px-16 xl:px-24">
+					<div class="max-w-6xl mx-auto transition-all duration-1000 opacity-0 translate-y-12" id="featured-card" data-category={getCategory(featuredPost)}>
+						<a 
+							href={`/blog/${featuredPost.id}/`}
+							class="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
+						>
+							<div class="grid lg:grid-cols-2">
+								<div class="relative aspect-[16/10] lg:aspect-auto overflow-hidden">
+									{featuredPost.data.heroImage && (
+										<img
+											src={featuredPost.data.heroImage}
+											alt={featuredPost.data.title || ''}
+											class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+										/>
+									)}
+									<div class="absolute top-4 left-4">
+										<span class="px-4 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-sm text-[hsl(var(--muted-bronze))]">
+											{getCategory(featuredPost)}
+										</span>
+									</div>
+								</div>
+								<div class="p-8 lg:p-12 flex flex-col justify-center">
+									<div class="flex items-center gap-4 text-sm text-[hsl(var(--deep-espresso))]/60 mb-4">
+										<span class="flex items-center gap-1.5">
+											<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-6 8h8m-8 4h8m-4-4v4m0 0v4m0-4h4m-4 0H8m8 0h4m-4 0v4m0-4V8m0 8v4m0-4h4m-4 0H8"></path>
+											</svg>
+											<FormattedDate date={featuredPost.data.pubDate} />
+										</span>
+										<span class="flex items-center gap-1.5">
+											<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+											</svg>
+											{featuredPost.data.readTime || '5 分鐘'}
+										</span>
+									</div>
+
+									<h2 class="text-2xl lg:text-3xl font-medium text-[hsl(var(--deep-espresso))] mb-3 group-hover:text-[hsl(var(--muted-bronze))] transition-colors">
+										{featuredPost.data.title}
+									</h2>
+
+									<p class="text-[hsl(var(--deep-espresso))]/60 leading-relaxed mb-6">
+										{featuredPost.data.description}
 									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
+
+									<div class="flex items-center justify-between">
+										<div class="flex items-center gap-3">
+											{featuredPost.data.authorImage ? (
+												<img
+													src={featuredPost.data.authorImage}
+													alt={featuredPost.data.author || 'Gee Hair'}
+													class="w-10 h-10 rounded-full object-cover bg-[hsl(var(--warm-beige))]"
+												/>
+											) : (
+												<div class="w-10 h-10 rounded-full bg-[hsl(var(--warm-beige))] flex items-center justify-center text-[hsl(var(--muted-bronze))] text-sm font-medium">
+													G
+												</div>
+											)}
+											<span class="text-sm text-[hsl(var(--deep-espresso))]/70">
+												{featuredPost.data.author || 'Gee Hair'}
+											</span>
+										</div>
+
+										<span class="flex items-center gap-2 text-[hsl(var(--muted-bronze))] font-medium group-hover:gap-3 transition-all">
+											閱讀更多
+											<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+											</svg>
+										</span>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
 			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+		)}
+
+		<!-- Blog Grid -->
+		<section class="py-12 lg:py-16">
+			<div class="px-6 sm:px-8 lg:px-16 xl:px-24">
+				<div class="max-w-6xl mx-auto">
+					<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" id="blog-grid">
+						{regularPosts.map((post, index) => (
+							<a
+								href={`/blog/${post.id}/`}
+								class="blog-card group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 opacity-0 translate-y-12"
+								data-category={getCategory(post)}
+								style={`transition-delay: ${index * 100}ms`}
+							>
+								<div class="relative aspect-[16/10] overflow-hidden">
+									{post.data.heroImage && (
+										<img
+											src={post.data.heroImage}
+											alt={post.data.title || ''}
+											class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+											loading="lazy"
+										/>
+									)}
+									<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+									<div class="absolute top-4 left-4">
+										<span class="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs text-[hsl(var(--muted-bronze))]">
+											{getCategory(post)}
+										</span>
+									</div>
+								</div>
+
+								<div class="p-6">
+									<div class="flex items-center gap-3 text-xs text-[hsl(var(--deep-espresso))]/50 mb-3">
+										<span class="flex items-center gap-1">
+											<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-6 8h8m-8 4h8m-4-4v4m0 0v4m0-4h4m-4 0H8m8 0h4m-4 0v4m0-4V8m0 8v4m0-4h4m-4 0H8"></path>
+											</svg>
+											<FormattedDate date={post.data.pubDate} />
+										</span>
+										<span class="flex items-center gap-1">
+											<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+											</svg>
+											{post.data.readTime || '5 分鐘'}
+										</span>
+									</div>
+
+									<h3 class="text-lg font-medium text-[hsl(var(--deep-espresso))] mb-2 group-hover:text-[hsl(var(--muted-bronze))] transition-colors line-clamp-2">
+										{post.data.title}
+									</h3>
+
+									<p class="text-sm text-[hsl(var(--deep-espresso))]/60 line-clamp-2 mb-4">
+										{post.data.description}
+									</p>
+
+<div class="flex items-center gap-2">
+										{post.data.authorImage ? (
+											<img
+                                                src={post.data.authorImage}
+                                                alt={post.data.author || 'Author'}
+                                                class="w-7 h-7 rounded-full object-cover bg-[hsl(var(--warm-beige))]"
+                                            />
+                                        ) : (
+                                            <div class="w-7 h-7 rounded-full bg-[hsl(var(--warm-beige))] flex items-center justify-center text-[hsl(var(--muted-bronze))] text-xs font-medium">
+                                                G
+                                            </div>
+                                        )}
+                                        <span class="text-xs text-[hsl(var(--deep-espresso))]/60">
+                                            {post.data.author || 'Gee Hair'}
+                                        </span>
+                                    </div>
+								</div>
+							</a>
+						))}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Newsletter Section -->
+		<section class="py-16 lg:py-24 bg-[hsl(var(--soft-cream))]">
+			<div class="px-6 sm:px-8 lg:px-16 xl:px-24">
+				<div class="max-w-2xl mx-auto text-center">
+					<h2 class="text-2xl lg:text-3xl font-medium text-[hsl(var(--deep-espresso))] mb-4">
+						訂閱我們的美髮日誌
+					</h2>
+					<p class="text-[hsl(var(--deep-espresso))]/70 mb-8">
+						第一時間獲取最新的染髮趨勢、護髮知識與獨家優惠
+					</p>
+					<form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" id="newsletter-form">
+						<input
+							type="email"
+							placeholder="輸入您的電子郵件"
+							class="flex-1 px-5 py-3 rounded-full border border-[hsl(var(--muted-bronze))]/20 bg-white focus:outline-none focus:border-[hsl(var(--muted-bronze))] transition-colors"
+							required
+						/>
+						<button 
+							type="submit"
+							class="px-6 py-3 bg-[hsl(var(--muted-bronze))] text-white rounded-full hover:bg-[hsl(var(--deep-espresso))] transition-colors"
+						>
+							訂閱
+						</button>
+					</form>
+				</div>
+			</div>
+		</section>
+	</div>
+</BaseLayout>
+
+<script>
+	// Category filter functionality
+	document.addEventListener('DOMContentLoaded', () => {
+		const categoryBtns = document.querySelectorAll('.category-btn');
+		const blogCards = document.querySelectorAll('.blog-card');
+		const featuredSection = document.getElementById('featured-section');
+		
+		// Set initial active state
+		categoryBtns[0]?.classList.add('bg-[hsl(var(--muted-bronze))]', 'text-white');
+		categoryBtns[0]?.classList.remove('bg-white/60', 'text-[hsl(var(--muted-bronze))]');
+		
+		categoryBtns.forEach((btn) => {
+			btn.addEventListener('click', () => {
+				const category = btn.getAttribute('data-category');
+				
+				// Update active button state
+				categoryBtns.forEach((b) => {
+					b.classList.remove('bg-[hsl(var(--muted-bronze))]', 'text-white');
+					b.classList.add('bg-white/60', 'text-[hsl(var(--muted-bronze))]');
+				});
+				btn.classList.remove('bg-white/60', 'text-[hsl(var(--muted-bronze))]');
+				btn.classList.add('bg-[hsl(var(--muted-bronze))]', 'text-white');
+				
+				// Filter blog cards
+				blogCards.forEach((card) => {
+					const cardCategory = card.getAttribute('data-category');
+					if (category === '全部' || cardCategory === category) {
+						(card as HTMLElement).style.display = 'block';
+					} else {
+						(card as HTMLElement).style.display = 'none';
+					}
+				});
+				
+				// Show/hide featured section based on category
+				if (featuredSection) {
+					if (category === '全部') {
+						featuredSection.style.display = 'block';
+					} else {
+						featuredSection.style.display = 'none';
+					}
+				}
+			});
+		});
+		
+		// Scroll reveal animation
+		const observerOptions = {
+			threshold: 0.1,
+			rootMargin: '0px 0px -50px 0px'
+		};
+		
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					entry.target.classList.remove('opacity-0', 'translate-y-12');
+					entry.target.classList.add('opacity-100', 'translate-y-0');
+					observer.unobserve(entry.target);
+				}
+			});
+		}, observerOptions);
+		
+		// Observe featured card
+		const featuredCard = document.getElementById('featured-card');
+		if (featuredCard) {
+			observer.observe(featuredCard);
+		}
+		
+		// Observe blog cards
+		blogCards.forEach((card) => {
+			observer.observe(card);
+		});
+		
+		// Newsletter form submission
+		const newsletterForm = document.getElementById('newsletter-form');
+		if (newsletterForm) {
+			newsletterForm.addEventListener('submit', (e) => {
+				e.preventDefault();
+				const emailInput = newsletterForm.querySelector('input[type="email"]') as HTMLInputElement;
+				if (emailInput && emailInput.value) {
+					alert('感謝您的訂閱！');
+					emailInput.value = '';
+				}
+			});
+		}
+	});
+</script>
+
+<style>
+	/* Hide scrollbar utility */
+	.hide-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	
+	.hide-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+	
+	/* Line clamp utilities */
+	.line-clamp-2 {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	
+	/* Noise overlay */
+	.noise-overlay::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+		opacity: 0.03;
+		pointer-events: none;
+		z-index: 1;
+	}
+</style>
