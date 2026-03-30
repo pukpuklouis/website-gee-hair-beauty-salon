@@ -47,7 +47,7 @@ Cloudflare Workers (via wrangler)
 
 ```bash
 pnpm run build
-npx wrangler deploy
+pnpm run deploy
 ```
 
 ## Key Dependencies

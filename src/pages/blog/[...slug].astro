@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, render, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SEO from "../../components/SEO.astro";
 import Schema from "../../components/Schema.astro";
@@ -29,6 +29,9 @@ interface Props {
 
 const { post, relatedPosts } = Astro.props;
 const { title, description, pubDate, heroImage, subtitle, category, tags, author, authorImage, readTime } = post.data;
+
+// Render the Content component for the blog post
+const { Content } = await render(post);
 
 // Get current URL for sharing
 const currentUrl = Astro.url.href;
@@ -191,7 +194,7 @@ const currentUrl = Astro.url.href;
 					<!-- Article Body -->
 					<div class="bg-white rounded-2xl shadow-sm p-8 lg:p-12 mb-12 opacity-0 translate-y-12 animate-fade-in-delay">
 						<div class="prose prose-lg max-w-none prose-headings:text-[hsl(var(--deep-espresso))] prose-p:text-[hsl(var(--deep-espresso))]/80 prose-strong:text-[hsl(var(--deep-espresso))] prose-li:text-[hsl(var(--deep-espresso))]/80 prose-a:text-[hsl(var(--muted-bronze))] prose-a:no-underline hover:prose-a:underline">
-							{post.body}
+							<Content />
 						</div>
 
 						<!-- Tags -->

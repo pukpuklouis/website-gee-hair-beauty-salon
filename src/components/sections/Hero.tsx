@@ -112,7 +112,7 @@ export default function Hero() {
           >
             <div className="w-8 h-[1px] bg-[hsl(var(--muted-bronze))]" />
             <span className="text-sm tracking-[0.3em] uppercase text-[hsl(var(--muted-bronze))]">
-              台北信義區
+              台北大安區
             </span>
           </div>
 
