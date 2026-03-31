@@ -9,3 +9,8 @@ PUBLIC_TINA_CLIENT_ID=your_client_id_here
 
 # TinaCMS Token (from app.tina.io)
 TINA_TOKEN=your_token_here
+
+# TinaCMS Search Indexer Token (from app.tina.io → Project → API Tokens)
+# Required for content search functionality
+# Docs: https://tina.io/docs/reference/search/overview
+TINA_SEARCH_TOKEN=your_search_token_here

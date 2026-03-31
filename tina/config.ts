@@ -36,4 +36,27 @@ export default defineConfig({
       GlobalConfigCollection,
     ],
   },
+  // TinaCMS Search Configuration
+  // Docs: https://tina.io/docs/reference/search/overview
+  search: {
+    tina: {
+      // Required: Get this from app.tina.io → Project → API Tokens → Search Indexer Token
+      indexerToken: process.env.TINA_SEARCH_TOKEN,
+      // Stopword languages for filtering common words (default: ['eng'])
+      // For Chinese content, consider removing or using minimal stopwords
+      stopwordLanguages: ["eng"],
+      // Fuzzy search enabled by default (tinacms@3.3.0+)
+      fuzzyEnabled: true,
+      fuzzyOptions: {
+        maxDistance: 2,          // Max edit distance for typos (0-10)
+        minSimilarity: 0.6,     // Min similarity score (0-1)
+        maxTermExpansions: 10,   // Max similar terms per word
+        useTranspositions: true, // Allow letter swaps (e.g., "teh" → "the")
+      },
+    },
+    // Number of documents indexed per batch
+    indexBatchSize: 100,
+    // Max characters indexed per text field
+    maxSearchIndexFieldLength: 100,
+  },
 });
