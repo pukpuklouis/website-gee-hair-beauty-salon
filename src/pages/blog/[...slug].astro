@@ -1,362 +1,83 @@
 ---
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { client } from "../../../tina/__generated__/client";
+import type { BlogQuery, BlogQueryVariables } from "../../../tina/__generated__/types";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SEO from "../../components/SEO.astro";
 import Schema from "../../components/Schema.astro";
-import FormattedDate from "../../components/FormattedDate.astro";
+import BlogPostRenderer from "../../components/BlogPostRenderer";
 
 export async function getStaticPaths() {
-	const posts = await getCollection("blog");
-	const allPosts = await getCollection("blog");
-
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: {
-			post,
-			// Get related posts (exclude current, take first 3)
-			relatedPosts: allPosts
-				.filter((p) => p.id !== post.id)
-				.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-				.slice(0, 3),
-		},
-	}));
+  const response = await client.queries.blogConnection();
+  return (
+    response.data?.blogConnection?.edges
+      ?.filter((edge): edge is NonNullable<typeof edge> => edge != null)
+      .map((edge) => ({
+        params: { slug: edge.node!._sys.filename },
+      })) ?? []
+  );
 }
 
-interface Props {
-	post: CollectionEntry<"blog">;
-	relatedPosts: CollectionEntry<"blog">[];
-}
+const { slug } = Astro.params;
 
-const { post, relatedPosts } = Astro.props;
-const { title, description, pubDate, heroImage, subtitle, category, tags, author, authorImage, readTime } = post.data;
+const response = await client.queries.blog({
+  relativePath: `${slug}.mdx`,
+});
 
-// Render the Content component for the blog post
-const { Content } = await render(post);
+const { data, query, variables } = response;
+const blog = data.blog;
 
-// Get current URL for sharing
-const currentUrl = Astro.url.href;
+// Fetch related posts (exclude current)
+const relatedResponse = await client.queries.blogConnection();
+const relatedPosts = (
+  relatedResponse.data?.blogConnection?.edges
+    ?.filter((edge): edge is NonNullable<typeof edge> => edge != null)
+    .filter((edge) => edge.node!._sys.filename !== slug)
+    .sort((a, b) => {
+      const dateA = a.node!.pubDate ? new Date(a.node!.pubDate).getTime() : 0;
+      const dateB = b.node!.pubDate ? new Date(b.node!.pubDate).getTime() : 0;
+      return dateB - dateA;
+    })
+    .slice(0, 3)
+    .map((edge) => ({
+      id: edge.node!._sys.filename,
+      data: {
+        title: edge.node!.title,
+        heroImage: edge.node!.heroImage,
+        category: edge.node!.category,
+        pubDate: edge.node!.pubDate ?? "",
+      },
+    })) ?? []
+);
+
+const seoTitle = blog.title ?? "Blog Post";
+const seoDescription = blog.description ?? "";
+const seoHeroImage = blog.heroImage ?? undefined;
+const seoPubDate = blog.pubDate ?? "";
+const seoAuthor = blog.author ?? undefined;
 ---
 
-<BaseLayout title={`${title} | Gee Hair Salon`} description={description}>
-	<SEO
-		title={`${title} | Gee Hair Salon`}
-		description={description}
-		image={heroImage}
-		type="article"
-	/>
+<BaseLayout title={`${seoTitle} | Gee Hair Salon`} description={seoDescription}>
+  <SEO
+    title={`${seoTitle} | Gee Hair Salon`}
+    description={seoDescription}
+    image={seoHeroImage}
+    type="article"
+  />
 
-	<Schema type="Article" title={title} description={description} image={heroImage} publishedDate={pubDate} author={author} />
+  <Schema
+    type="Article"
+    title={seoTitle}
+    description={seoDescription}
+    image={seoHeroImage}
+    publishedDate={seoPubDate}
+    author={seoAuthor}
+  />
 
-	<div class="min-h-screen bg-[hsl(var(--warm-beige))]">
-		<!-- Navigation Bar -->
-		<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-[hsl(var(--muted-bronze))]/10">
-			<div class="px-6 sm:px-8 lg:px-16 xl:px-24">
-				<div class="flex items-center justify-between h-16">
-					<a
-						href="/blog"
-						class="flex items-center gap-2 text-[hsl(var(--deep-espresso))] hover:text-[hsl(var(--muted-bronze))] transition-colors"
-					>
-						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-						</svg>
-						<span class="text-sm">返回日誌</span>
-					</a>
-
-					<div class="flex items-center gap-2">
-						<!-- Share Button -->
-						<div class="relative" id="share-container">
-							<button
-								id="share-btn"
-								class="w-10 h-10 rounded-full hover:bg-[hsl(var(--warm-beige))] flex items-center justify-center transition-colors"
-							>
-								<svg class="w-5 h-5 text-[hsl(var(--deep-espresso))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-								</svg>
-							</button>
-
-							<!-- Share Menu (hidden by default) -->
-							<div id="share-menu" class="hidden absolute right-0 top-full mt-2 bg-white rounded-xl shadow-lg border border-[hsl(var(--muted-bronze))]/10 p-2 min-w-[160px]">
-								<a
-									href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-[hsl(var(--warm-beige))] transition-colors"
-								>
-									<svg class="w-4 h-4 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-									</svg>
-									<span class="text-sm text-[hsl(var(--deep-espresso))]">Facebook</span>
-								</a>
-								<a
-									href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(currentUrl)}`}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-[hsl(var(--warm-beige))] transition-colors"
-								>
-									<svg class="w-4 h-4 text-[#06C755]" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
-									</svg>
-									<span class="text-sm text-[hsl(var(--deep-espresso))]">LINE</span>
-								</a>
-								<button
-									id="copy-link-btn"
-									class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-[hsl(var(--warm-beige))] transition-colors text-left"
-								>
-									<svg class="w-4 h-4 text-[hsl(var(--muted-bronze))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-									</svg>
-									<span class="text-sm text-[hsl(var(--deep-espresso))]">複製連結</span>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</nav>
-
-		<!-- Hero Image -->
-		<section class="relative">
-			<div class="aspect-[21/9] lg:aspect-[3/1] overflow-hidden">
-				{heroImage && (
-					<img
-						src={heroImage}
-						alt={title || ""}
-						class="w-full h-full object-cover"
-					/>
-				)}
-				<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--warm-beige))] via-transparent to-transparent"></div>
-			</div>
-		</section>
-
-		<!-- Article Content -->
-		<article class="relative -mt-20 lg:-mt-32 z-10">
-			<div class="px-6 sm:px-8 lg:px-16 xl:px-24">
-				<div class="max-w-3xl mx-auto">
-					<!-- Article Header Card -->
-					<div class="bg-white rounded-2xl shadow-lg p-8 lg:p-12 mb-8 opacity-0 translate-y-12 animate-fade-in">
-						<!-- Category & Meta -->
-						<div class="flex flex-wrap items-center gap-4 mb-6">
-							{category && (
-								<span class="px-4 py-1.5 bg-[hsl(var(--blush-mist))]/10 rounded-full text-sm text-[hsl(var(--blush-mist))]">
-									{category}
-								</span>
-							)}
-							<div class="flex items-center gap-4 text-sm text-[hsl(var(--deep-espresso))]/60">
-								<span class="flex items-center gap-1.5">
-									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-6 8h8m-8 4h8m-4-4v4m0 0v4m0-4h4m-4 0H8m8 0h4m-4 0v4m0-4V8m0 8v4m0-4h4m-4 0H8"></path>
-									</svg>
-									<FormattedDate date={pubDate} />
-								</span>
-								{readTime && (
-									<span class="flex items-center gap-1.5">
-										<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-										</svg>
-										{readTime}
-									</span>
-								)}
-							</div>
-						</div>
-
-						<!-- Title -->
-						<h1 class="text-3xl lg:text-4xl font-medium text-[hsl(var(--deep-espresso))] mb-4 leading-tight">
-							{title}
-						</h1>
-
-						<!-- Subtitle -->
-						{subtitle && (
-							<p class="text-lg text-[hsl(var(--muted-bronze))] mb-6">
-								{subtitle}
-							</p>
-						)}
-
-						<!-- Author -->
-						<div class="flex items-center gap-4 pt-6 border-t border-[hsl(var(--muted-bronze))]/10">
-							{authorImage ? (
-								<img
-									src={authorImage}
-									alt={author || "Gee Hair"}
-									class="w-12 h-12 rounded-full object-cover bg-[hsl(var(--warm-beige))]"
-								/>
-							) : (
-								<div class="w-12 h-12 rounded-full bg-[hsl(var(--warm-beige))] flex items-center justify-center text-[hsl(var(--muted-bronze))] font-medium">
-									G
-								</div>
-							)}
-							<div>
-								<p class="font-medium text-[hsl(var(--deep-espresso))]">{author || "Gee Hair"}</p>
-								<p class="text-sm text-[hsl(var(--deep-espresso))]/60">專業設計師</p>
-							</div>
-						</div>
-					</div>
-
-					<!-- Article Body -->
-					<div class="bg-white rounded-2xl shadow-sm p-8 lg:p-12 mb-12 opacity-0 translate-y-12 animate-fade-in-delay">
-						<div class="prose prose-lg max-w-none prose-headings:text-[hsl(var(--deep-espresso))] prose-p:text-[hsl(var(--deep-espresso))]/80 prose-strong:text-[hsl(var(--deep-espresso))] prose-li:text-[hsl(var(--deep-espresso))]/80 prose-a:text-[hsl(var(--muted-bronze))] prose-a:no-underline hover:prose-a:underline">
-							<Content />
-						</div>
-
-						<!-- Tags -->
-						{tags && tags.length > 0 && (
-							<div class="mt-12 pt-8 border-t border-[hsl(var(--muted-bronze))]/10">
-								<div class="flex flex-wrap gap-2">
-									{tags.map((tag: string) => (
-										<span class="px-4 py-2 bg-[hsl(var(--warm-beige))] rounded-full text-sm text-[hsl(var(--muted-bronze))]">
-											{tag}
-										</span>
-									))}
-								</div>
-							</div>
-						)}
-					</div>
-
-					<!-- CTA Section -->
-					<div class="bg-gradient-to-br from-[hsl(var(--muted-bronze))] to-[hsl(var(--deep-espresso))] rounded-2xl p-8 lg:p-12 text-white text-center mb-16 opacity-0 translate-y-12 animate-fade-in-delay-2">
-						<h3 class="text-2xl font-medium mb-4">喜歡這篇文章嗎？</h3>
-						<p class="text-white/80 mb-6 max-w-lg mx-auto">
-							歡迎預約我們的服務，讓專業設計師為你打造專屬造型
-						</p>
-						<div class="flex flex-col sm:flex-row gap-4 justify-center">
-							<a
-								href="/?scrollTo=booking"
-								class="px-8 py-3 bg-white text-[hsl(var(--deep-espresso))] rounded-full font-medium hover:bg-white/90 transition-colors"
-							>
-								立即預約
-							</a>
-							<a
-								href="/blog"
-								class="px-8 py-3 bg-white/10 text-white rounded-full font-medium hover:bg-white/20 transition-colors"
-							>
-								查看更多文章
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</article>
-
-		<!-- Related Posts -->
-		{relatedPosts.length > 0 && (
-			<section class="py-16 lg:py-24 bg-[hsl(var(--soft-cream))]">
-				<div class="px-6 sm:px-8 lg:px-16 xl:px-24">
-					<div class="max-w-6xl mx-auto">
-						<h2 class="text-2xl lg:text-3xl font-medium text-[hsl(var(--deep-espresso))] mb-8">
-							更多相關文章
-						</h2>
-
-						<div class="grid md:grid-cols-3 gap-6">
-							{relatedPosts.map((relatedPost) => (
-								<a
-									href={`/blog/${relatedPost.id}/`}
-									class="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
-								>
-									<div class="relative aspect-[16/10] overflow-hidden">
-										{relatedPost.data.heroImage && (
-											<img
-												src={relatedPost.data.heroImage}
-												alt={relatedPost.data.title || ""}
-												class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-												loading="lazy"
-											/>
-										)}
-									</div>
-									<div class="p-6">
-										{relatedPost.data.category && (
-											<span class="text-xs text-[hsl(var(--muted-bronze))] mb-2 block">
-												{relatedPost.data.category}
-											</span>
-										)}
-										<h3 class="font-medium text-[hsl(var(--deep-espresso))] group-hover:text-[hsl(var(--muted-bronze))] transition-colors line-clamp-2">
-											{relatedPost.data.title}
-										</h3>
-									</div>
-								</a>
-							))}
-						</div>
-					</div>
-				</div>
-			</section>
-		)}
-	</div>
+  <BlogPostRenderer
+    client:tina
+    data={data}
+    query={query}
+    variables={variables}
+    relatedPosts={relatedPosts}
+  />
 </BaseLayout>
-
-<style>
-	/* Animation keyframes */
-	@keyframes fadeInUp {
-		from {
-			opacity: 0;
-			transform: translateY(1.5rem);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	.animate-fade-in {
-		animation: fadeInUp 0.8s ease-out forwards;
-	}
-
-	.animate-fade-in-delay {
-		animation: fadeInUp 0.8s ease-out 0.2s forwards;
-	}
-
-	.animate-fade-in-delay-2 {
-		animation: fadeInUp 0.8s ease-out 0.4s forwards;
-	}
-
-	/* Line clamp utility */
-	.line-clamp-2 {
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-	}
-
-	/* Prose styles for blog content */
-	.prose h2 {
-		@apply text-2xl font-medium mt-10 mb-6;
-	}
-
-	.prose h3 {
-		@apply text-xl font-medium mt-8 mb-4;
-	}
-
-	.prose p {
-		@apply mb-4 leading-relaxed;
-	}
-
-	.prose hr {
-		@apply my-8 border-[hsl(var(--muted-bronze))]/20;
-	}
-</style>
-
-<script>
-	// Share menu toggle
-	const shareBtn = document.getElementById('share-btn');
-	const shareMenu = document.getElementById('share-menu');
-	const copyLinkBtn = document.getElementById('copy-link-btn');
-
-	shareBtn?.addEventListener('click', () => {
-		shareMenu?.classList.toggle('hidden');
-	});
-
-	// Close share menu when clicking outside
-	document.addEventListener('click', (e) => {
-		if (!shareBtn?.contains(e.target as Node) && !shareMenu?.contains(e.target as Node)) {
-			shareMenu?.classList.add('hidden');
-		}
-	});
-
-	// Copy link functionality
-	copyLinkBtn?.addEventListener('click', async () => {
-		try {
-			await navigator.clipboard.writeText(window.location.href);
-			alert('連結已複製到剪貼簿');
-		} catch (err) {
-			console.error('Failed to copy:', err);
-		}
-		shareMenu?.classList.add('hidden');
-	});
-</script>
