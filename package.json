@@ -83,5 +83,10 @@
     "*.{ts,tsx,js,jsx,mjs,cjs,astro}": [
       "biome check --write"
     ]
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "simple-git-hooks"
+    ]
   }
 }
