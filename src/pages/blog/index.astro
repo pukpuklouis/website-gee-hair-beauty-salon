@@ -1,5 +1,9 @@
 ---
 import { getCollection } from "astro:content";
+import FormattedDate from "../../components/FormattedDate.astro";
+import Schema from "../../components/Schema.astro";
+import SEO from "../../components/SEO.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 // Get blog posts from Astro content collection
 const allPosts = await getCollection("blog");
@@ -8,14 +12,14 @@ const allPosts = await getCollection("blog");
 const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // Categories for filter (derived from actual post data)
-const _categories = [
+const categories = [
 	"全部",
 	...new Set(posts.map((p) => p.data.category).filter(Boolean) as string[]),
 ];
 
 // Featured post (first post)
-const _featuredPost = posts[0];
-const _regularPosts = posts.slice(1);
+const featuredPost = posts[0];
+const regularPosts = posts.slice(1);
 
 // Format date helper
 function _formatDate(date: Date): string {
@@ -96,7 +100,7 @@ function _getCategory(post: any): string {
 		{featuredPost && (
 			<section class="py-12 lg:py-16" id="featured-section">
 				<div class="px-6 sm:px-8 lg:px-16 xl:px-24">
-					<div class="max-w-6xl mx-auto transition-all duration-1000 opacity-0 translate-y-12" id="featured-card" data-category={getCategory(featuredPost)}>
+					<div class="max-w-6xl mx-auto transition-all duration-1000 opacity-0 translate-y-12" id="featured-card" data-category={_getCategory(featuredPost)}>
 						<a 
 							href={`/blog/${featuredPost.id}/`}
 							class="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
@@ -112,7 +116,7 @@ function _getCategory(post: any): string {
 									)}
 									<div class="absolute top-4 left-4">
 										<span class="px-4 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-sm text-[hsl(var(--muted-bronze))]">
-											{getCategory(featuredPost)}
+											{_getCategory(featuredPost)}
 										</span>
 									</div>
 								</div>
@@ -182,7 +186,7 @@ function _getCategory(post: any): string {
 							<a
 								href={`/blog/${post.id}/`}
 								class="blog-card group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 opacity-0 translate-y-12"
-								data-category={getCategory(post)}
+								data-category={_getCategory(post)}
 								style={`transition-delay: ${index * 100}ms`}
 							>
 								<div class="relative aspect-[16/10] overflow-hidden">
@@ -197,7 +201,7 @@ function _getCategory(post: any): string {
 									<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 									<div class="absolute top-4 left-4">
 										<span class="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs text-[hsl(var(--muted-bronze))]">
-											{getCategory(post)}
+											{_getCategory(post)}
 										</span>
 									</div>
 								</div>

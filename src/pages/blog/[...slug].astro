@@ -1,5 +1,7 @@
 ---
 import { client } from "../../../tina/__generated__/client";
+import BlogPostRenderer from "../../components/BlogPostRenderer.tsx";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
 	const response = await client.queries.blogConnection();
@@ -48,8 +50,8 @@ const _relatedPosts =
 			},
 		})) ?? [];
 
-const _title = blog.title ?? "Blog Post";
-const _description = blog.description ?? "";
+const title = blog.title ?? "Blog Post";
+const description = blog.description ?? "";
 ---
 
 <BaseLayout title={`${title} | Gee Hair Salon`} description={description}>
@@ -58,6 +60,6 @@ const _description = blog.description ?? "";
     data={data}
     query={query}
     variables={variables}
-    relatedPosts={relatedPosts}
+    relatedPosts={_relatedPosts}
   />
 </BaseLayout>

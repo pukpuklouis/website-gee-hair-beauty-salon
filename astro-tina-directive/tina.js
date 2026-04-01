@@ -3,19 +3,11 @@
  * @type {import('astro').ClientDirective}
  */
 /**
- * Hydrate on first click on the window
- * @type {import('astro').ClientDirective}
+ * Hydrate immediately (not just in TinaCMS iframe).
+ * Falls back to SSR if-based progressive enhancement ( load → hydrate ).
+ * Also provides `client:only` directive for SSR support without TinaCMS iframe.
  */
-export default async (load, _options, _el) => {
-	try {
-		const isInIframe = window.self !== window.top;
-		if (!isInIframe) {
-			return;
-		}
-
-		const hydrate = await load();
-		await hydrate();
-	} catch (error) {
-		console.error("An error occurred in the Tina client directive:", error);
-	}
+export default async (load, _options, el) => {
+	const hydrate = await load();
+	await hydrate();
 };

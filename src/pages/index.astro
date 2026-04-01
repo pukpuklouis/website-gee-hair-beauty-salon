@@ -1,13 +1,17 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SEO from "../components/SEO.astro";
+import Schema from "../components/Schema.astro";
+import HomeSections from "../components/HomeSections";
 import { client } from "../../tina/__generated__/client";
 
 const response = await client.queries.page({ relativePath: "home.mdx" });
 const pageData = response.data.page;
-const _seoTitle = pageData.seoTitle || "Gee Hair Salon - 專業美髮沙龍";
+const seoTitle = pageData.seoTitle || "Gee Hair Salon - 專業美髮沙龍";
 ---
 
+<Schema type="LocalBusiness" />
+<SEO title={seoTitle} description="專業美髮沙龍，提供染髮、護髮、剪髮等服務" keywords="美髮,沙龍,Gee Hair" />
 <BaseLayout title={seoTitle} description="專業美髮沙龍，提供染髮、護髮、剪髮等服務">
-	<SEO title={seoTitle} description="專業美髮沙龍，提供染髮、護髮、剪髮等服務" keywords="美髮,沙龍,Gee Hair" />
-	<Schema type="LocalBusiness" />
 	<HomeSections client:tina data={response.data} query={response.query} variables={response.variables} />
 </BaseLayout>

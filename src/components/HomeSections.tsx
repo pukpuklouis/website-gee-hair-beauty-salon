@@ -76,23 +76,23 @@ export default function HomeSections({ data, query, variables }: Props) {
 
 	// Hero refs and state
 	const heroRef = useRef<HTMLDivElement>(null);
-	const [_isLoaded, setIsLoaded] = useState(false);
-	const [_mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+	const [isLoaded, setIsLoaded] = useState(false);
+	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
 	// About section ref for IntersectionObserver
 	const aboutRef = useRef<HTMLDivElement>(null);
-	const [_aboutVisible, setAboutVisible] = useState(false);
+	const [aboutVisible, setAboutVisible] = useState(false);
 
 	// Portfolio state
 	const [activeCategory, setActiveCategory] = useState("all");
 	const [selectedItem, setSelectedItem] = useState<any>(null);
 	const portfolioRef = useRef<HTMLDivElement>(null);
-	const [_portfolioVisible, setPortfolioVisible] = useState(false);
+	const [portfolioVisible, setPortfolioVisible] = useState(false);
 
 	// Testimonials state
 	const testimonialsRef = useRef<HTMLDivElement>(null);
-	const [_testimonialsVisible, setTestimonialsVisible] = useState(false);
-	const [_activeTestimonialIndex, _setActiveTestimonialIndex] = useState(0);
+	const [testimonialsVisible, setTestimonialsVisible] = useState(false);
+	const [activeTestimonialIndex, setActiveTestimonialIndex] = useState(0);
 
 	// Designers carousel ref
 	const designersCarouselRef = useRef<HTMLDivElement>(null);
