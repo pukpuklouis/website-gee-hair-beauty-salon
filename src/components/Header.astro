@@ -1,5 +1,4 @@
 ---
-import HeaderLink from "./HeaderLink.astro";
 ---
 
 <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-custom-expo bg-transparent" data-scrolled="false">
@@ -44,7 +43,7 @@ import HeaderLink from "./HeaderLink.astro";
 					</svg>
 					美髮日誌
 				</a>
-				
+
 				<button
 					id="booking-cta-desktop"
 					class="rounded-full px-6 py-2 transition-all duration-300 bg-[hsl(var(--muted-bronze))] text-white hover:bg-[hsl(var(--deep-espresso))] flex items-center gap-2"
@@ -175,12 +174,12 @@ import HeaderLink from "./HeaderLink.astro";
 <script>
 	// Header scroll behavior
 	const header = document.getElementById('main-header');
-	
+
 	function updateHeaderScroll() {
 		const isScrolled = window.scrollY > 100;
 		header?.setAttribute('data-scrolled', String(isScrolled));
 	}
-	
+
 	window.addEventListener('scroll', updateHeaderScroll, { passive: true });
 	updateHeaderScroll();
 

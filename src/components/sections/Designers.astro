@@ -1,59 +1,59 @@
 ---
 interface Designer {
-  id: number;
-  name: string;
-  englishName: string;
-  image: string;
-  title: string;
-  specialties: string[];
-  experience: string;
-  description: string;
+	id: number;
+	name: string;
+	englishName: string;
+	image: string;
+	title: string;
+	specialties: string[];
+	experience: string;
+	description: string;
 }
 
-const designers: Designer[] = [
-  {
-    id: 1,
-    name: '陳明華',
-    englishName: 'Michael',
-    image: '/designer1.png',
-    title: '創意總監',
-    specialties: ['#韓系層次', '#光線染', '#男士造型'],
-    experience: '15年經驗',
-    description: '專精韓系髮型設計，擅長依據個人風格打造專屬造型',
-  },
-  {
-    id: 2,
-    name: '林曉雨',
-    englishName: 'Sarah',
-    image: '/designer2.png',
-    title: '資深設計師',
-    specialties: ['#微醺蜜粉', '#燙髮達人', '#短髮專家'],
-    experience: '10年經驗',
-    description: '色彩魔法師，讓每位客人找到最適合的髮色',
-  },
-  {
-    id: 3,
-    name: '王婷婷',
-    englishName: 'Tina',
-    image: '/designer3.png',
-    title: '資深設計師',
-    specialties: ['#美甲美睫', '#精緻護髮', '#新娘造型'],
-    experience: '8年經驗',
-    description: '細節控，從髮絲到指尖都追求完美',
-  },
-  {
-    id: 4,
-    name: '張思琪',
-    englishName: 'Jessica',
-    image: '/designer4.png',
-    title: '設計師',
-    specialties: ['#青木棕', '#灰霧感', '#自然捲度'],
-    experience: '6年經驗',
-    description: '新世代設計師，緊跟韓國最新潮流趨勢',
-  },
+const _designers: Designer[] = [
+	{
+		id: 1,
+		name: "陳明華",
+		englishName: "Michael",
+		image: "/designer1.png",
+		title: "創意總監",
+		specialties: ["#韓系層次", "#光線染", "#男士造型"],
+		experience: "15年經驗",
+		description: "專精韓系髮型設計，擅長依據個人風格打造專屬造型",
+	},
+	{
+		id: 2,
+		name: "林曉雨",
+		englishName: "Sarah",
+		image: "/designer2.png",
+		title: "資深設計師",
+		specialties: ["#微醺蜜粉", "#燙髮達人", "#短髮專家"],
+		experience: "10年經驗",
+		description: "色彩魔法師，讓每位客人找到最適合的髮色",
+	},
+	{
+		id: 3,
+		name: "王婷婷",
+		englishName: "Tina",
+		image: "/designer3.png",
+		title: "資深設計師",
+		specialties: ["#美甲美睫", "#精緻護髮", "#新娘造型"],
+		experience: "8年經驗",
+		description: "細節控，從髮絲到指尖都追求完美",
+	},
+	{
+		id: 4,
+		name: "張思琪",
+		englishName: "Jessica",
+		image: "/designer4.png",
+		title: "設計師",
+		specialties: ["#青木棕", "#灰霧感", "#自然捲度"],
+		experience: "6年經驗",
+		description: "新世代設計師，緊跟韓國最新潮流趨勢",
+	},
 ];
 
-const visibleDelay = (index: number) => 400 + index * 100;
+const _visibleDelay = (index: number) => 400 + index * 100;
 ---
 
 <section

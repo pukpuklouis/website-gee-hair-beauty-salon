@@ -1,68 +1,70 @@
 ---
 interface Service {
-  id: number;
-  title: string;
-  subtitle: string;
-  description: string;
-  image: string;
-  icon: string;
-  tags: string[];
+	id: number;
+	title: string;
+	subtitle: string;
+	description: string;
+	image: string;
+	icon: string;
+	tags: string[];
 }
 
-const services: Service[] = [
-  {
-    id: 1,
-    title: '剪髮造型',
-    subtitle: 'Hair Cut & Styling',
-    description: '依據臉型與個人風格，打造最適合您的髮型。從韓系層次到俐落短髮，我們的設計師都能完美呈現。',
-    image: '/service1.jpg',
-    icon: 'scissors',
-    tags: ['#韓系層次', '#俐落短髮', '#修飾臉型'],
-  },
-  {
-    id: 2,
-    title: '染髮服務',
-    subtitle: 'Hair Coloring',
-    description: '從微醺蜜粉到青木棕、冷棕茶，我們使用高品質染劑，讓您的髮色持久亮麗，同時保護髮質。',
-    image: '/service2.jpg',
-    icon: 'droplets',
-    tags: ['#微醺蜜粉', '#青木棕', '#光線染'],
-  },
-  {
-    id: 3,
-    title: '燙髮服務',
-    subtitle: 'Perm & Texture',
-    description: '韓系紋理燙、氣墊燙、羊毛捲等多種選擇，打造自然蓬鬆或個性捲度，讓造型更有層次。',
-    image: '/service3.jpg',
-    icon: 'flame',
-    tags: ['#韓系紋理燙', '#氣墊燙', '#自然捲度'],
-  },
-  {
-    id: 4,
-    title: '假髮服務',
-    subtitle: 'Wig Services',
-    description: '專業假髮訂製與調整服務，提供自然舒適的佩戴體驗，幫助您找回自信與美麗。',
-    image: '/service4.jpg',
-    icon: 'user-circle',
-    tags: ['#訂製假髮', '#自然舒適', '#重拾自信'],
-  },
-  {
-    id: 5,
-    title: '美甲美睫',
-    subtitle: 'Nail & Lash',
-    description: '精緻美甲設計與自然美睫嫁接，從細節展現您的獨特品味，讓美麗從指尖到眼神。',
-    image: '/service5.jpg',
-    icon: 'sparkles',
-    tags: ['#精緻美甲', '#自然美睫', '#細節之美'],
-  },
+const _services: Service[] = [
+	{
+		id: 1,
+		title: "剪髮造型",
+		subtitle: "Hair Cut & Styling",
+		description:
+			"依據臉型與個人風格，打造最適合您的髮型。從韓系層次到俐落短髮，我們的設計師都能完美呈現。",
+		image: "/service1.jpg",
+		icon: "scissors",
+		tags: ["#韓系層次", "#俐落短髮", "#修飾臉型"],
+	},
+	{
+		id: 2,
+		title: "染髮服務",
+		subtitle: "Hair Coloring",
+		description:
+			"從微醺蜜粉到青木棕、冷棕茶，我們使用高品質染劑，讓您的髮色持久亮麗，同時保護髮質。",
+		image: "/service2.jpg",
+		icon: "droplets",
+		tags: ["#微醺蜜粉", "#青木棕", "#光線染"],
+	},
+	{
+		id: 3,
+		title: "燙髮服務",
+		subtitle: "Perm & Texture",
+		description: "韓系紋理燙、氣墊燙、羊毛捲等多種選擇，打造自然蓬鬆或個性捲度，讓造型更有層次。",
+		image: "/service3.jpg",
+		icon: "flame",
+		tags: ["#韓系紋理燙", "#氣墊燙", "#自然捲度"],
+	},
+	{
+		id: 4,
+		title: "假髮服務",
+		subtitle: "Wig Services",
+		description: "專業假髮訂製與調整服務，提供自然舒適的佩戴體驗，幫助您找回自信與美麗。",
+		image: "/service4.jpg",
+		icon: "user-circle",
+		tags: ["#訂製假髮", "#自然舒適", "#重拾自信"],
+	},
+	{
+		id: 5,
+		title: "美甲美睫",
+		subtitle: "Nail & Lash",
+		description: "精緻美甲設計與自然美睫嫁接，從細節展現您的獨特品味，讓美麗從指尖到眼神。",
+		image: "/service5.jpg",
+		icon: "sparkles",
+		tags: ["#精緻美甲", "#自然美睫", "#細節之美"],
+	},
 ];
 
-const iconSvgs: Record<string, string> = {
-  scissors: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" x2="8.12" y1="4" y2="15.88"/><line x1="14.47" x2="20" y1="14.48" y2="20"/><line x1="8.12" x2="12" y1="8.12" y2="12"/></svg>`,
-  droplets: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.39-2.27-1.04-3.14C8.56 6.63 6.75 5 4.5 5 2.25 5 0 7.25 0 9.5c0 2.3 1.7 4.3 4.05 4.9.63.16 1.24.3 1.95.4-.45.8-.75 1.7-.75 2.5 0 1.1.9 2 2 2h6.5c1.1 0 2-.9 2-2 0-.8-.3-1.7-.75-2.5.71-.1 1.32-.24 1.95-.4 2.35-.6 4.05-2.6 4.05-4.9C24 7.25 21.75 5 19.5 5c-2.25 0-4.06 1.63-5.46 4.11-.65.87-1.04 1.98-1.04 3.14 0 2.22 1.8 4.05 4 4.05z"/></svg>`,
-  flame: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`,
-  'user-circle': `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/><path d="M12 14c-1.1 0-2 .9-2 2"/></svg>`,
-  sparkles: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>`,
+const _iconSvgs: Record<string, string> = {
+	scissors: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" x2="8.12" y1="4" y2="15.88"/><line x1="14.47" x2="20" y1="14.48" y2="20"/><line x1="8.12" x2="12" y1="8.12" y2="12"/></svg>`,
+	droplets: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.39-2.27-1.04-3.14C8.56 6.63 6.75 5 4.5 5 2.25 5 0 7.25 0 9.5c0 2.3 1.7 4.3 4.05 4.9.63.16 1.24.3 1.95.4-.45.8-.75 1.7-.75 2.5 0 1.1.9 2 2 2h6.5c1.1 0 2-.9 2-2 0-.8-.3-1.7-.75-2.5.71-.1 1.32-.24 1.95-.4 2.35-.6 4.05-2.6 4.05-4.9C24 7.25 21.75 5 19.5 5c-2.25 0-4.06 1.63-5.46 4.11-.65.87-1.04 1.98-1.04 3.14 0 2.22 1.8 4.05 4 4.05z"/></svg>`,
+	flame: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`,
+	"user-circle": `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/><path d="M12 14c-1.1 0-2 .9-2 2"/></svg>`,
+	sparkles: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>`,
 };
 ---
 

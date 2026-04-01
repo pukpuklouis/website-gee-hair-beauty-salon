@@ -1,6 +1,6 @@
 ---
 interface Props {
-	type?: 'LocalBusiness' | 'Article' | 'Website';
+	type?: "LocalBusiness" | "Article" | "Website";
 	// Article props
 	title?: string;
 	description?: string;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const {
-	type = 'LocalBusiness',
+	type = "LocalBusiness",
 	title,
 	description,
 	image,
@@ -25,84 +25,93 @@ const {
 const localBusinessSchema = {
 	"@context": "https://schema.org",
 	"@type": "HairSalon",
-	"name": "Gee Hair & Beauty Salon",
-	"description": "專業美髮沙龍，提供染髮、護髮、剪髮等服務。位於信義安和站捷運步行3分鐘。",
-	"url": "https://geehair.com",
-	"telephone": "02-66058387",
-	"address": {
+	name: "Gee Hair & Beauty Salon",
+	description: "專業美髮沙龍，提供染髮、護髮、剪髮等服務。位於信義安和站捷運步行3分鐘。",
+	url: "https://geehair.com",
+	telephone: "02-66058387",
+	address: {
 		"@type": "PostalAddress",
-		"streetAddress": "通化街19巷5號1樓",
-		"addressLocality": "大安區",
-		"addressRegion": "台北市",
-		"addressCountry": "TW"
+		streetAddress: "通化街19巷5號1樓",
+		addressLocality: "大安區",
+		addressRegion: "台北市",
+		addressCountry: "TW",
 	},
-	"geo": {
+	geo: {
 		"@type": "GeoCoordinates",
-		"latitude": 25.0338,
-		"longitude": 121.5434
+		latitude: 25.0338,
+		longitude: 121.5434,
 	},
-	"openingHoursSpecification": [
+	openingHoursSpecification: [
 		{
 			"@type": "OpeningHoursSpecification",
-			"dayOfWeek": ["Wednesday", "Thursday", "Friday", "Saturday"],
-			"opens": "12:00",
-			"closes": "19:00"
+			dayOfWeek: ["Wednesday", "Thursday", "Friday", "Saturday"],
+			opens: "12:00",
+			closes: "19:00",
 		},
 		{
 			"@type": "OpeningHoursSpecification",
-			"dayOfWeek": "Sunday",
-			"opens": "12:00",
-			"closes": "18:00"
-		}
+			dayOfWeek: "Sunday",
+			opens: "12:00",
+			closes: "18:00",
+		},
 	],
-	"priceRange": "$$",
-	"image": "https://geehair.com/salon-intro.jpg",
-	"sameAs": [
+	priceRange: "$$",
+	image: "https://geehair.com/salon-intro.jpg",
+	sameAs: [
 		"https://www.facebook.com/share/1B5RZX5gBQ/?mibextid=wwXIfr",
 		"https://www.instagram.com/geehairbeauty",
-		"https://lin.ee/WoerF3s"
-	]
+		"https://lin.ee/WoerF3s",
+	],
 };
 
 // Article schema for blog posts
-const articleSchema = title && description ? {
-	"@context": "https://schema.org",
-	"@type": "Article",
-	"headline": title,
-	"description": description,
-	"image": image || "https://geehair.com/salon-intro.jpg",
-	"datePublished": publishedDate?.toISOString(),
-	"author": {
-		"@type": "Organization",
-		"name": "Gee Hair & Beauty Salon"
-	},
-	"publisher": {
-		"@type": "Organization",
-		"name": "Gee Hair & Beauty Salon",
-		"logo": {
-			"@type": "ImageObject",
-			"url": "https://geehair.com/gee-hair-beauty-salon-logo.svg"
-		}
-	}
-} : null;
+const articleSchema =
+	title && description
+		? {
+				"@context": "https://schema.org",
+				"@type": "Article",
+				headline: title,
+				description: description,
+				image: image || "https://geehair.com/salon-intro.jpg",
+				datePublished: publishedDate?.toISOString(),
+				author: {
+					"@type": "Organization",
+					name: "Gee Hair & Beauty Salon",
+				},
+				publisher: {
+					"@type": "Organization",
+					name: "Gee Hair & Beauty Salon",
+					logo: {
+						"@type": "ImageObject",
+						url: "https://geehair.com/gee-hair-beauty-salon-logo.svg",
+					},
+				},
+			}
+		: null;
 
 // Website schema for blog listing
-const websiteSchema = url ? {
-	"@context": "https://schema.org",
-	"@type": "WebSite",
-	"name": "Gee Hair & Beauty Salon",
-	"url": url,
-	"description": "探索最新的染髮趨勢、護髮知識與造型技巧",
-	"publisher": {
-		"@type": "Organization",
-		"name": "Gee Hair & Beauty Salon"
-	}
-} : null;
+const websiteSchema = url
+	? {
+			"@context": "https://schema.org",
+			"@type": "WebSite",
+			name: "Gee Hair & Beauty Salon",
+			url: url,
+			description: "探索最新的染髮趨勢、護髮知識與造型技巧",
+			publisher: {
+				"@type": "Organization",
+				name: "Gee Hair & Beauty Salon",
+			},
+		}
+	: null;
 
-const schema = type === 'LocalBusiness' ? localBusinessSchema
-	: type === 'Article' ? articleSchema
-	: type === 'Website' ? websiteSchema
-	: localBusinessSchema;
+const _schema =
+	type === "LocalBusiness"
+		? localBusinessSchema
+		: type === "Article"
+			? articleSchema
+			: type === "Website"
+				? websiteSchema
+				: localBusinessSchema;
 ---
 
 <script define:vars={{ schema }}>

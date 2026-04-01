@@ -1,4 +1,3 @@
-import React from "react";
 import * as Icons from "react-icons/tb";
 
 type Props = {
@@ -16,4 +15,3 @@ const ReactIcon = ({ iconName }: Props) => {
 };
 
 export default ReactIcon;
-

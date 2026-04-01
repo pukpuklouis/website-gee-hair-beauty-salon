@@ -1,45 +1,44 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import SEO from '../../components/SEO.astro';
-import Schema from '../../components/Schema.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 
 // Get blog posts from Astro content collection
-const allPosts = await getCollection('blog');
+const allPosts = await getCollection("blog");
 
 // Sort posts by date (newest first)
-const posts = allPosts.sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // Categories for filter (derived from actual post data)
-const categories = ['全部', ...new Set(posts.map(p => p.data.category).filter(Boolean) as string[])];
+const _categories = [
+	"全部",
+	...new Set(posts.map((p) => p.data.category).filter(Boolean) as string[]),
+];
 
 // Featured post (first post)
-const featuredPost = posts[0];
-const regularPosts = posts.slice(1);
+const _featuredPost = posts[0];
+const _regularPosts = posts.slice(1);
 
 // Format date helper
-function formatDate(date: Date): string {
-	return date.toLocaleDateString('zh-TW', {
-		year: 'numeric',
-		month: '2-digit',
-		day: '2-digit',
-	}).replace(/\//g, '-');
+function _formatDate(date: Date): string {
+	return date
+		.toLocaleDateString("zh-TW", {
+			year: "numeric",
+			month: "2-digit",
+			day: "2-digit",
+		})
+		.replace(/\//g, "-");
 }
 
 // Calculate read time from body content
-function calculateReadTime(body: string): string {
-	if (!body) return '5 分鐘';
+function _calculateReadTime(body: string): string {
+	if (!body) return "5 分鐘";
 	const wordCount = body.split(/\s+/).length;
 	const minutes = Math.ceil(wordCount / 200);
 	return `${minutes} 分鐘`;
 }
 
 // Get category from post (fallback to default)
-function getCategory(post: any): string {
-	return post.data.category || '美髮';
+function _getCategory(post: any): string {
+	return post.data.category || "美髮";
 }
 ---
 
@@ -282,89 +281,173 @@ function getCategory(post: any): string {
 </BaseLayout>
 
 <script>
-	// Category filter functionality
-	document.addEventListener('DOMContentLoaded', () => {
-		const categoryBtns = document.querySelectorAll('.category-btn');
-		const blogCards = document.querySelectorAll('.blog-card');
+	type BlogPageState = {
+		observer?: IntersectionObserver;
+		abortController?: AbortController;
+		handlePageLoad?: () => void;
+		handleBeforeSwap?: () => void;
+	};
+
+	const windowWithBlogPageState = window as Window & {
+		__blogPageState?: BlogPageState;
+	};
+	const blogPageState = windowWithBlogPageState.__blogPageState ??= {};
+
+	const inactiveButtonClasses = ['bg-white/60', 'text-[hsl(var(--muted-bronze))]'];
+	const activeButtonClasses = ['bg-[hsl(var(--muted-bronze))]', 'text-white'];
+	const hiddenRevealClasses = ['opacity-0', 'translate-y-12'];
+	const visibleRevealClasses = ['opacity-100', 'translate-y-0'];
+
+	const revealElement = (element: Element) => {
+		element.classList.remove(...hiddenRevealClasses);
+		element.classList.add(...visibleRevealClasses);
+	};
+
+	const resetRevealElement = (element: Element) => {
+		element.classList.remove(...visibleRevealClasses);
+		element.classList.add(...hiddenRevealClasses);
+	};
+
+	const isElementInViewport = (element: Element) => {
+		const rect = element.getBoundingClientRect();
+		return rect.top < window.innerHeight - 50 && rect.bottom > 0;
+	};
+
+	const cleanupBlogPage = () => {
+		blogPageState.abortController?.abort();
+		blogPageState.observer?.disconnect();
+		blogPageState.abortController = undefined;
+		blogPageState.observer = undefined;
+	};
+
+	const initBlogPage = () => {
+		cleanupBlogPage();
+
+		const categoryBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('.category-btn'));
+		const blogCards = Array.from(document.querySelectorAll<HTMLElement>('.blog-card'));
 		const featuredSection = document.getElementById('featured-section');
-		
-		// Set initial active state
-		categoryBtns[0]?.classList.add('bg-[hsl(var(--muted-bronze))]', 'text-white');
-		categoryBtns[0]?.classList.remove('bg-white/60', 'text-[hsl(var(--muted-bronze))]');
-		
-		categoryBtns.forEach((btn) => {
-			btn.addEventListener('click', () => {
-				const category = btn.getAttribute('data-category');
-				
-				// Update active button state
-				categoryBtns.forEach((b) => {
-					b.classList.remove('bg-[hsl(var(--muted-bronze))]', 'text-white');
-					b.classList.add('bg-white/60', 'text-[hsl(var(--muted-bronze))]');
-				});
-				btn.classList.remove('bg-white/60', 'text-[hsl(var(--muted-bronze))]');
-				btn.classList.add('bg-[hsl(var(--muted-bronze))]', 'text-white');
-				
-				// Filter blog cards
-				blogCards.forEach((card) => {
-					const cardCategory = card.getAttribute('data-category');
-					if (category === '全部' || cardCategory === category) {
-						(card as HTMLElement).style.display = 'block';
-					} else {
-						(card as HTMLElement).style.display = 'none';
-					}
-				});
-				
-				// Show/hide featured section based on category
-				if (featuredSection) {
-					if (category === '全部') {
-						featuredSection.style.display = 'block';
-					} else {
-						featuredSection.style.display = 'none';
-					}
-				}
-			});
-		});
-		
-		// Scroll reveal animation
-		const observerOptions = {
-			threshold: 0.1,
-			rootMargin: '0px 0px -50px 0px'
-		};
-		
+		const featuredCard = document.getElementById('featured-card');
+		const newsletterForm = document.getElementById('newsletter-form') as HTMLFormElement | null;
+
+		if (!categoryBtns.length && !blogCards.length && !featuredCard && !newsletterForm) {
+			return;
+		}
+
+		const abortController = new AbortController();
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					entry.target.classList.remove('opacity-0', 'translate-y-12');
-					entry.target.classList.add('opacity-100', 'translate-y-0');
-					observer.unobserve(entry.target);
-				}
+				if (!entry.isIntersecting) return;
+				revealElement(entry.target);
+				observer.unobserve(entry.target);
 			});
-		}, observerOptions);
-		
-		// Observe featured card
-		const featuredCard = document.getElementById('featured-card');
-		if (featuredCard) {
-			observer.observe(featuredCard);
-		}
-		
-		// Observe blog cards
-		blogCards.forEach((card) => {
-			observer.observe(card);
+		}, {
+			threshold: 0.1,
+			rootMargin: '0px 0px -50px 0px'
 		});
-		
-		// Newsletter form submission
-		const newsletterForm = document.getElementById('newsletter-form');
-		if (newsletterForm) {
-			newsletterForm.addEventListener('submit', (e) => {
-				e.preventDefault();
-				const emailInput = newsletterForm.querySelector('input[type="email"]') as HTMLInputElement;
-				if (emailInput && emailInput.value) {
-					alert('感謝您的訂閱！');
-					emailInput.value = '';
-				}
+
+		blogPageState.abortController = abortController;
+		blogPageState.observer = observer;
+
+		const syncRevealTarget = (element: HTMLElement | null, shouldShow = true) => {
+			if (!element) return;
+
+			if (!shouldShow) {
+				observer.unobserve(element);
+				return;
+			}
+
+			if (element.style.display === 'none') {
+				return;
+			}
+
+			if (element.classList.contains('opacity-100')) {
+				observer.unobserve(element);
+				return;
+			}
+
+			if (isElementInViewport(element)) {
+				revealElement(element);
+				observer.unobserve(element);
+				return;
+			}
+
+			observer.observe(element);
+		};
+
+		const setActiveCategory = (category: string) => {
+			categoryBtns.forEach((button) => {
+				const isActive = button.dataset.category === category;
+				button.classList.toggle(activeButtonClasses[0], isActive);
+				button.classList.toggle(activeButtonClasses[1], isActive);
+				button.classList.toggle(inactiveButtonClasses[0], !isActive);
+				button.classList.toggle(inactiveButtonClasses[1], !isActive);
 			});
-		}
-	});
+
+			blogCards.forEach((card) => {
+				const shouldShow = category === '全部' || card.dataset.category === category;
+				card.style.display = shouldShow ? 'block' : 'none';
+				syncRevealTarget(card, shouldShow);
+			});
+
+			if (featuredSection) {
+				const showFeatured = category === '全部';
+				featuredSection.style.display = showFeatured ? 'block' : 'none';
+				syncRevealTarget(featuredCard as HTMLElement | null, showFeatured);
+			}
+		};
+
+		[featuredCard, ...blogCards].forEach((element) => {
+			if (!element || element.classList.contains('opacity-100')) {
+				return;
+			}
+			resetRevealElement(element);
+		});
+
+		setActiveCategory('全部');
+
+		categoryBtns.forEach((button) => {
+			button.addEventListener('click', () => {
+				setActiveCategory(button.dataset.category || '全部');
+			}, { signal: abortController.signal });
+		});
+
+		newsletterForm?.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const emailInput = newsletterForm.querySelector('input[type="email"]') as HTMLInputElement | null;
+			if (!emailInput?.value) return;
+			alert('感謝您的訂閱！');
+			emailInput.value = '';
+		}, { signal: abortController.signal });
+	};
+
+	if (blogPageState.handlePageLoad) {
+		document.removeEventListener('astro:page-load', blogPageState.handlePageLoad);
+	}
+
+	if (blogPageState.handleBeforeSwap) {
+		document.removeEventListener('astro:before-swap', blogPageState.handleBeforeSwap);
+	}
+
+	const handlePageLoad = () => {
+		requestAnimationFrame(() => {
+			initBlogPage();
+		});
+	};
+
+	const handleBeforeSwap = () => {
+		cleanupBlogPage();
+	};
+
+	blogPageState.handlePageLoad = handlePageLoad;
+	blogPageState.handleBeforeSwap = handleBeforeSwap;
+	document.addEventListener('astro:page-load', handlePageLoad);
+	document.addEventListener('astro:before-swap', handleBeforeSwap);
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', handlePageLoad, { once: true });
+	} else {
+		handlePageLoad();
+	}
 </script>
 
 <style>

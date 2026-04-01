@@ -1,8 +1,5 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import SEO from "../components/SEO.astro";
-import config from '../content/config/config.json';
 
 export async function getStaticPaths() {
 	const pages = await getCollection("page");

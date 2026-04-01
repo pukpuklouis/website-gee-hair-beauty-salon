@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import { wrapFieldsWithMeta } from "tinacms";
-import * as tb from "react-icons/tb";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import React, { useEffect, useRef, useState } from "react";
+import * as tb from "react-icons/tb";
+import { wrapFieldsWithMeta } from "tinacms";
 
 const IconComponent = wrapFieldsWithMeta((props) => {
 	const [searchQuery, setSearchQuery] = useState("");
@@ -17,10 +17,7 @@ const IconComponent = wrapFieldsWithMeta((props) => {
 		iconKey.toLowerCase().includes(searchQuery.toLowerCase())
 	);
 
-	const itemsPerRow = Math.max(
-		1,
-		Math.floor((containerWidth + gapSize) / (iconSize + gapSize))
-	);
+	const itemsPerRow = Math.max(1, Math.floor((containerWidth + gapSize) / (iconSize + gapSize)));
 
 	const totalRows = Math.ceil(filteredIcons.length / itemsPerRow);
 
@@ -87,10 +84,7 @@ const IconComponent = wrapFieldsWithMeta((props) => {
 				>
 					{rowVirtualizer.getVirtualItems().map((virtualRow) => {
 						const startIndex = virtualRow.index * itemsPerRow;
-						const endIndex = Math.min(
-							startIndex + itemsPerRow,
-							filteredIcons.length
-						);
+						const endIndex = Math.min(startIndex + itemsPerRow, filteredIcons.length);
 
 						return (
 							<div
@@ -113,9 +107,7 @@ const IconComponent = wrapFieldsWithMeta((props) => {
 											style={{
 												cursor: "pointer",
 												padding: "5px",
-												border: isSelected
-													? "2px solid blue"
-													: "2px solid transparent",
+												border: isSelected ? "2px solid blue" : "2px solid transparent",
 												borderRadius: "4px",
 												textAlign: "center",
 												width: `${iconSize}px`,
@@ -139,4 +131,3 @@ const IconComponent = wrapFieldsWithMeta((props) => {
 });
 
 export default IconComponent;
-
